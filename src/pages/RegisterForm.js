@@ -4,31 +4,39 @@ import { Link } from "react-router-dom";
 import "./register.css";
 
 function RegisterForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleRegister = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      alert("Registration successful! You can now login.");
+    } catch (error) {
+      alert(error.message || "Registration failed!");
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
   return (
     <div className="register-container">
       <h1>Register</h1>
-      <form className="register-form" onSubmit={handleSubmit}>
+      <form className="register-form">
         <label>
           Email:
           <input
             type="email"
             name="email"
-            value={formData.email}
-            onChange={handleInputChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
           />
         </label>
 
@@ -37,14 +45,15 @@ function RegisterForm() {
           <input
             type="password"
             name="password"
-            value={formData.password}
-            onChange={handleInputChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
           />
         </label>
 
         <br />
 
-        <button type="submit">Register</button>
+        <button onClick={handleRegister}>Register</button>
       </form>
       <div className="sign-in-link">
         Already have an account? <Link to="/login">Sign In</Link>
