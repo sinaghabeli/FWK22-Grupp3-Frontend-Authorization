@@ -1,116 +1,21 @@
-import React, { useState } from "react";
+import RegisterForm from "./pages//RegisterForm";
+import LoginForm from "./pages/LoginForm";
+import UserPage from "./pages/UserPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import "./App.css";
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [data, setData] = useState(null);
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const result = await response.json();
-      localStorage.setItem("access_token", result.token);
-      setAuthenticated(true);
-    } catch (error) {
-      alert(error.message || "Login failed!");
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      const response = await fetch("auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
-
-      alert("Registration successful! You can now login.");
-    } catch (error) {
-      alert(error.message || "Registration failed!");
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    setAuthenticated(false);
-    setData(null);
-  };
-
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-      const response = await fetch("data", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          handleLogout();
-          alert("Session expired. Please login again.");
-          return;
-        }
-        throw new Error("Failed to fetch data from backend");
-      }
-
-      const result = await response.json();
-      setData(result.data);
-    } catch (error) {
-      alert(error.message || "Failed to fetch data");
-    }
-  };
-
   return (
     <div className="App">
-      <header className="App-header">
-        {isAuthenticated ? (
-          <>
-            {data ? (
-              <p>{data}</p>
-            ) : (
-              <button onClick={fetchData}>Fetch Data</button>
-            )}
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        ) : (
-          <div className="auth-container">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="input-field"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="input-field"
-            />
-            <button onClick={handleLogin} className="auth-button">
-              Login
-            </button>
-            <button onClick={handleRegister} className="auth-button">
-              Register
-            </button>
-          </div>
-        )}
-      </header>
+      <Router>
+        <Routes>
+          <Route path="/" element={<RegisterForm />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/userpage" element={<UserPage />} />
+          <Route path="*" element={<h1>Page not found 404</h1>} />
+        </Routes>
+      </Router>
     </div>
   );
 }
