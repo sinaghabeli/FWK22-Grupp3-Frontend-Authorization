@@ -9,7 +9,7 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch("auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -29,7 +29,7 @@ function App() {
 
   const handleRegister = async () => {
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
+      const response = await fetch("auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -54,7 +54,7 @@ function App() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch("http://localhost:3002/data", {
+      const response = await fetch("data", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
