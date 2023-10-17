@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./register.css";
 
@@ -7,7 +7,11 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await fetch("auth/login", {
         method: "POST",
@@ -19,9 +23,15 @@ function LoginForm() {
         throw new Error("Login failed");
       }
 
-      const result = await response.json();
-      localStorage.setItem("access_token", result.token);
-      setAuthenticated(true);
+      const data = await response.json();
+
+      console.log(data.token);
+
+      localStorage.setItem("accessToken", data.token);
+
+      if (data.token) {
+        navigate(`/userpage`);
+      }
     } catch (error) {
       alert(error.message || "Login failed!");
     }

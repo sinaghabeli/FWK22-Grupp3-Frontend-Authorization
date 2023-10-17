@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./register.css";
 
@@ -7,7 +7,11 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async () => {
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await fetch("auth/register", {
         method: "POST",
@@ -19,7 +23,15 @@ function RegisterForm() {
         throw new Error("Registration failed");
       }
 
-      //   alert("Registration successful! You can now login.");'
+      const data = await response.json();
+
+      localStorage.setItem("accessToken", data.token);
+
+      console.log(data.token);
+
+      if (data.token) {
+        navigate(`/userpage`);
+      }
     } catch (error) {
       alert(error.message || "Registration failed!");
     }
