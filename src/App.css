@@ -52,3 +52,7 @@
 .login-button:hover {
   background-color: #21a1f1;
 }
+
+.auth-button {
+  margin-left: 2%;
+}

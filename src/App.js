@@ -9,7 +9,7 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:3001/auth/login", {
+      const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -27,10 +27,28 @@ function App() {
     }
   };
 
+  const handleRegister = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      alert("Registration successful! You can now login.");
+    } catch (error) {
+      alert(error.message || "Registration failed!");
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); // Remove token
-    setAuthenticated(false); // Update authentication state
-    setData(null); // Clear fetched data
+    localStorage.removeItem("access_token");
+    setAuthenticated(false);
+    setData(null);
   };
 
   const fetchData = async () => {
@@ -42,7 +60,6 @@ function App() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          // Unauthorized
           handleLogout();
           alert("Session expired. Please login again.");
           return;
@@ -70,7 +87,7 @@ function App() {
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
-          <div className="login-container">
+          <div className="auth-container">
             <input
               type="email"
               value={email}
@@ -85,8 +102,11 @@ function App() {
               placeholder="Password"
               className="input-field"
             />
-            <button onClick={handleLogin} className="login-button">
+            <button onClick={handleLogin} className="auth-button">
               Login
+            </button>
+            <button onClick={handleRegister} className="auth-button">
+              Register
             </button>
           </div>
         )}
