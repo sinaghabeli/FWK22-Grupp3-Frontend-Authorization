@@ -19,7 +19,7 @@ function RegisterForm() {
         throw new Error("Registration failed");
       }
 
-      alert("Registration successful! You can now login.");
+      //   alert("Registration successful! You can now login.");'
     } catch (error) {
       alert(error.message || "Registration failed!");
     }
