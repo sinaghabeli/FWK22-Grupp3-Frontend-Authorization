@@ -6,18 +6,27 @@ import { useEffect } from "react";
 function UserPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = Cookies.get("authToken");
+  const token = Cookies.get("authToken");
 
+  useEffect(() => {
     if (!token) {
-      navigate(`/login`);
+      navigate("/login");
     }
   }, []);
 
-  const handleLogout = () => {
-    // localStorage.removeItem("accessToken");
-    Cookies.remove("authToken");
-    navigate(`/`);
+  const handleLogout = async () => {
+    try {
+      // Make a request to the server to handle logout
+      await fetch("auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      // Redirect to the login page
+      navigate(`/login`);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const fetchData = async () => {
