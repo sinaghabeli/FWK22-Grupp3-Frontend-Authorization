@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import "./register.css";
 
@@ -25,9 +26,13 @@ function RegisterForm() {
 
       const data = await response.json();
 
-      localStorage.setItem("accessToken", data.token);
+      // localStorage.setItem("accessToken", data.token);
 
-      console.log(data.token);
+      // Set the token in a cookie
+      Cookies.set("authToken", data.token, { expires: 1 }); // Expires in 7 days
+
+      // Retrieve the token from the cookie
+      // const storedToken = Cookies.get("authToken");
 
       if (data.token) {
         navigate(`/userpage`);
