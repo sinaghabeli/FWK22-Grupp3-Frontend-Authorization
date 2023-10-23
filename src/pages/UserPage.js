@@ -1,17 +1,31 @@
 import "./userpage.css";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function UserPage() {
   const navigate = useNavigate();
 
-  const token = Cookies.get("authToken");
+  const [cookieExists, setCookieExists] = useState(false);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+    const checkCookie = async () => {
+      try {
+        // Make a request to a server route that requires the HTTP-only cookie
+        await fetch("/auth/check-cookie", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        // If the request is successful, set the state to indicate that the cookie exists
+        setCookieExists(true);
+      } catch (error) {
+        // If the request fails, set the state to indicate that the cookie does not exist
+        setCookieExists(false);
+      }
+    };
+
+    checkCookie();
   }, []);
 
   const handleLogout = async () => {
