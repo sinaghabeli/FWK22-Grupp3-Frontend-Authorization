@@ -25,10 +25,6 @@ function LoginForm() {
 
       const data = await response.json();
 
-      console.log(data.token);
-
-      localStorage.setItem("accessToken", data.token);
-
       if (data.token) {
         navigate(`/userpage`);
       }
