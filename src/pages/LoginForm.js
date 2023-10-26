@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./register.css";
@@ -8,6 +8,39 @@ function LoginForm() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkCookie = async () => {
+      try {
+        // Make a request to a server route that requires the HTTP-only cookie
+        const response = await fetch("/auth/check-cookie", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const data = await response.json();
+
+        if (data === "exist") {
+          try {
+            // Make a request to the server to handle logout
+            await fetch("auth/logout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+            });
+
+            // Redirect to the login page
+            navigate(`/login`);
+          } catch (error) {
+            console.error("Logout error:", error);
+          }
+        }
+      } catch (error) {
+        // If the request fails, set the state to indicate that the cookie does not exist
+      }
+    };
+
+    checkCookie();
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

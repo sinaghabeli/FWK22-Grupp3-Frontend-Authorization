@@ -16,8 +16,6 @@ function UserPage() {
 
         const data = await response.json();
 
-        data;
-
         if (data !== "exist") {
           // If the request is successful, set the state to indicate that the cookie exists
           navigate("/login");
