@@ -58,8 +58,12 @@ function LoginForm() {
 
       const data = await response.json();
 
+      const username = data.email.split("@")[0];
+
+      console.log(data.email);
+
       if (data.token) {
-        navigate(`/userpage`);
+        navigate(`/userpage/${username}`);
       }
     } catch (error) {
       alert(error.message || "Login failed!");

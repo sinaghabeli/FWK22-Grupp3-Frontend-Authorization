@@ -1,11 +1,21 @@
 import "./userpage.css";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function UserPage() {
   const navigate = useNavigate();
+  const [admin, setAdmin] = useState(false);
+
+  // Access the parameters from the current route
+  const { username } = useParams();
 
   useEffect(() => {
+    if (username === "admin") {
+      setAdmin(true);
+    } else {
+      setAdmin(false);
+    }
+
     const checkCookie = async () => {
       try {
         // Make a request to a server route that requires the HTTP-only cookie
@@ -26,7 +36,7 @@ function UserPage() {
     };
 
     checkCookie();
-  }, []);
+  }, [username]);
 
   const handleLogout = async () => {
     try {
@@ -66,11 +76,21 @@ function UserPage() {
   };
 
   return (
-    <div>
-      <h1>User Page</h1>
-      <button onClick={fetchData}>Fetch Data</button>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+    <>
+      {admin ? (
+        <div>
+          <h1>Admin Page! </h1>
+          <button onClick={fetchData}>Fetch Data</button>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      ) : (
+        <div>
+          <h1>Welcome {username}</h1>
+          <button onClick={fetchData}>Fetch Data</button>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      )}
+    </>
   );
 }
 
