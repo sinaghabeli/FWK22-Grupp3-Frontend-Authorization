@@ -59,9 +59,13 @@ function RegisterForm() {
       const data = await response.json();
 
       const username = data.email.split("@")[0];
+      const role = data.role;
+
+      console.log(username);
+      console.log(role);
 
       if (data.token) {
-        navigate(`/userpage/${username}`);
+        navigate(`/userpage/${username}/${role}`);
       }
     } catch (error) {
       alert(error.message || "Registration failed!");

@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<RegisterForm />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/userpage/:username" element={<UserPage />} />
+          <Route path="/userpage/:username/:role" element={<UserPage />} />
           <Route path="*" element={<h1>Page not found 404</h1>} />
         </Routes>
       </Router>

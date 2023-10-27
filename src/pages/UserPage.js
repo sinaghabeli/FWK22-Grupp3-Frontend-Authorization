@@ -7,10 +7,10 @@ function UserPage() {
   const [admin, setAdmin] = useState(false);
 
   // Access the parameters from the current route
-  const { username } = useParams();
+  const { username, role } = useParams();
 
   useEffect(() => {
-    if (username === "admin") {
+    if (role === "admin") {
       setAdmin(true);
     } else {
       setAdmin(false);
