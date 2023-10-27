@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./register.css";
 
-function LoginForm() {
+function LoginForm({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -59,10 +59,11 @@ function LoginForm() {
       const data = await response.json();
 
       const username = data.email.split("@")[0];
-      const role = data.role;
+
+      onLogin(data.role);
 
       if (data.token) {
-        navigate(`/userpage/${username}/${role}`);
+        navigate(`/userpage/${username}`);
       }
     } catch (error) {
       alert(error.message || "Login failed!");

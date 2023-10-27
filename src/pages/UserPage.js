@@ -2,15 +2,17 @@ import "./userpage.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function UserPage() {
+function UserPage({ userData }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
 
   // Access the parameters from the current route
-  const { username, role } = useParams();
+  const { username } = useParams();
+
+  console.log(userData);
 
   useEffect(() => {
-    if (role === "admin") {
+    if (userData === "admin") {
       setAdmin(true);
     } else {
       setAdmin(false);
