@@ -95,6 +95,7 @@ function UserPage({ userData }) {
           <h1>Admin Page! </h1>
           <button onClick={fetchData}>Fetch Data</button>
           <button onClick={handleLogout}>Logout</button>
+          <h2> {data} </h2>
         </div>
       ) : (
         <div>

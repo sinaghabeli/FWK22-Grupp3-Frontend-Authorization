@@ -35,7 +35,7 @@ function LoginForm({ onLogin }) {
           }
         }
       } catch (error) {
-        // If the request fails, set the state to indicate that the cookie does not exist
+        message.error(error);
       }
     };
 
