@@ -59,9 +59,17 @@ function UserPage({ userData }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("data", {
-        headers: { Authorization: `Bearer ${info}` },
-      });
+      let response;
+      if (admin) {
+        response = await fetch("http://localhost:5001/data/all", {
+          headers: { Authorization: `Bearer ${info}` },
+        });
+      } else {
+        response = await fetch("http://localhost:5001/data/userData", {
+          headers: { Authorization: `Bearer ${info}` },
+        });
+      }
+
       if (!response.ok) {
         if (response.status === 401) {
           handleLogout();
@@ -72,8 +80,9 @@ function UserPage({ userData }) {
       }
 
       const result = await response.json();
+
+      console.log(result);
       setData(result.data);
-      console.log(result.data);
     } catch (error) {
       alert(error.message || "Failed to fetch data");
     }
@@ -92,6 +101,7 @@ function UserPage({ userData }) {
           <h1>Welcome {username}</h1>
           <button onClick={fetchData}>Fetch Data</button>
           <button onClick={handleLogout}>Logout</button>
+          <h2> {data} </h2>
         </div>
       )}
     </>
