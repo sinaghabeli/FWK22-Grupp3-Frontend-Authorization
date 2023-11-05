@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 function UserPage({ userData }) {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
+  const [data, setData] = useState(null);
+  const [info, setInfo] = useState(null);
 
   // Access the parameters from the current route
   const { username } = useParams();
-
-  console.log(userData);
 
   useEffect(() => {
     if (userData === "admin") {
@@ -28,7 +28,9 @@ function UserPage({ userData }) {
 
         const data = await response.json();
 
-        if (data !== "exist") {
+        setInfo(data.token);
+
+        if (data.role !== "exist") {
           // If the request is successful, set the state to indicate that the cookie exists
           navigate("/login");
         }
@@ -56,25 +58,25 @@ function UserPage({ userData }) {
   };
 
   const fetchData = async () => {
-    // try {
-    //   // const token = localStorage.getItem("access_token");
-    //   const response = await fetch("data", {
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   if (!response.ok) {
-    //     if (response.status === 401) {
-    //       handleLogout();
-    //       alert("Session expired. Please login again.");
-    //       return;
-    //     }
-    //     throw new Error("Failed to fetch data from backend");
-    //   }
-    //   const result = await response.json();
-    //   setData(result.data);
-    //   console.log(result.data);
-    // } catch (error) {
-    //   alert(error.message || "Failed to fetch data");
-    // }
+    try {
+      const response = await fetch("data", {
+        headers: { Authorization: `Bearer ${info}` },
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          handleLogout();
+          alert("Session expired. Please login again.");
+          return;
+        }
+        throw new Error("Failed to fetch data from backend");
+      }
+
+      const result = await response.json();
+      setData(result.data);
+      console.log(result.data);
+    } catch (error) {
+      alert(error.message || "Failed to fetch data");
+    }
   };
 
   return (

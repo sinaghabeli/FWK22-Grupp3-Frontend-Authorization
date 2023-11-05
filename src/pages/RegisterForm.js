@@ -20,7 +20,7 @@ function RegisterForm({ onLogin }) {
 
         const data = await response.json();
 
-        if (data === "exist") {
+        if (data.role === "exist") {
           try {
             // Make a request to the server to handle logout
             await fetch("auth/logout", {
