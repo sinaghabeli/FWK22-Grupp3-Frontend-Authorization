@@ -1,6 +1,7 @@
 import "./userpage.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
 function UserPage({ userData }) {
   const navigate = useNavigate();
@@ -92,6 +93,17 @@ function UserPage({ userData }) {
     <>
       {admin ? (
         <div>
+          <Helmet>
+            <title>User Page</title>
+            <meta
+              name="description"
+              content="User page after login or register"
+            />
+            <meta
+              name="keywords"
+              content="React, JavaScript, web development, secure web app, front-end development"
+            />
+          </Helmet>
           <h1>Admin Page! </h1>
           <button onClick={fetchData}>Fetch Data</button>
           <button onClick={handleLogout}>Logout</button>

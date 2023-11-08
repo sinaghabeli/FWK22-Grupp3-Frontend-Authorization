@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import "./register.css";
 
@@ -72,6 +73,17 @@ function RegisterForm({ onLogin }) {
 
   return (
     <div className="register-container">
+      <Helmet>
+        <title>Register Form</title>
+        <meta
+          name="description"
+          content="Register page to register new users"
+        />
+        <meta
+          name="keywords"
+          content="React, JavaScript, web development, secure web app, front-end development"
+        />
+      </Helmet>
       <h1>Register</h1>
       <form className="register-form">
         <label>
