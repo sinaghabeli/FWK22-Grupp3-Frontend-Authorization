@@ -105,14 +105,14 @@ function UserPage({ userData }) {
             />
           </Helmet>
           <h1>Admin Page! </h1>
-          <button onClick={fetchData}>Fetch Data</button>
+          <button onClick={fetchData}>Get Data</button>
           <button onClick={handleLogout}>Logout</button>
           <h2> {data} </h2>
         </div>
       ) : (
         <div>
           <h1>Welcome {username}</h1>
-          <button onClick={fetchData}>Fetch Data</button>
+          <button onClick={fetchData}>Get Data</button>
           <button onClick={handleLogout}>Logout</button>
           <h2> {data} </h2>
         </div>
