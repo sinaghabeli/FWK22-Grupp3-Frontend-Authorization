@@ -12,6 +12,8 @@ function UserPage({ userData }) {
   // Access the parameters from the current route
   const { username } = useParams();
 
+  let count = 1;
+
   useEffect(() => {
     if (userData === "admin") {
       setAdmin(true);
@@ -82,11 +84,23 @@ function UserPage({ userData }) {
 
       const result = await response.json();
 
-      console.log(result);
       setData(result.data);
     } catch (error) {
       alert(error.message || "Failed to fetch data");
     }
+  };
+
+  const getDate = (date) => {
+    const dateString = date;
+    const dateObject = new Date(dateString);
+
+    const year = dateObject.getFullYear();
+    const month = dateObject.getMonth() + 1; // Month is zero-based, so add 1
+    const day = dateObject.getDate();
+
+    const newDate = `${year} - ${month} - ${day}`;
+
+    return newDate;
   };
 
   return (
@@ -107,7 +121,32 @@ function UserPage({ userData }) {
           <h1>Admin Page! </h1>
           <button onClick={fetchData}>Get Data</button>
           <button onClick={handleLogout}>Logout</button>
-          <h2> {data} </h2>
+          {data ? (
+            <table style={{ borderCollapse: "collapse", width: "100%" }}>
+              <thead>
+                <tr>
+                  <th style={tableCellStyle}>List</th>
+                  <th style={tableCellStyle}>ID</th>
+                  <th style={tableCellStyle}>Email</th>
+                  <th style={tableCellStyle}>Role</th>
+                  <th style={tableCellStyle}>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((user) => (
+                  <tr key={user._id} style={tableCellStyle}>
+                    <td style={tableCellStyle}>{count++}</td>
+                    <td style={tableCellStyle}>{user._id}</td>
+                    <td style={tableCellStyle}>{user.email}</td>
+                    <td style={tableCellStyle}>{user.role}</td>
+                    <td style={tableCellStyle}>{getDate(user.createdAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <h3>Press on Get Data to see all users</h3>
+          )}
         </div>
       ) : (
         <div>
@@ -120,5 +159,11 @@ function UserPage({ userData }) {
     </>
   );
 }
+
+const tableCellStyle = {
+  border: "1px solid #ddd",
+  padding: "8px",
+  textAlign: "left",
+};
 
 export default UserPage;
