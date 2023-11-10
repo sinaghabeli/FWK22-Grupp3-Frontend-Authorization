@@ -98,7 +98,7 @@ function UserPage({ userData }) {
     const month = dateObject.getMonth() + 1; // Month is zero-based, so add 1
     const day = dateObject.getDate();
 
-    const newDate = `${year} - ${month} - ${day}`;
+    const newDate = `${year}-${month}-${day}`;
 
     return newDate;
   };
@@ -153,7 +153,26 @@ function UserPage({ userData }) {
           <h1>Welcome {username}</h1>
           <button onClick={fetchData}>Get Data</button>
           <button onClick={handleLogout}>Logout</button>
-          <h2> {data} </h2>
+          {data ? (
+            <table style={{ borderCollapse: "collapse", width: "100%" }}>
+              <thead>
+                <tr>
+                  <th style={tableCellStyle}>ID</th>
+                  <th style={tableCellStyle}>Email</th>
+                  <th style={tableCellStyle}>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={tableCellStyle}>
+                  <td style={tableCellStyle}>{data._id}</td>
+                  <td style={tableCellStyle}>{data.email}</td>
+                  <td style={tableCellStyle}>{getDate(data.createdAt)}</td>
+                </tr>
+              </tbody>
+            </table>
+          ) : (
+            <h3>Press on Get Data to get User data!</h3>
+          )}
         </div>
       )}
     </>
