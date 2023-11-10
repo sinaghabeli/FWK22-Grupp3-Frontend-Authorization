@@ -36,7 +36,7 @@ function LoginForm({ onLogin }) {
           }
         }
       } catch (error) {
-        message.error(error);
+        console.error(error);
       }
     };
 

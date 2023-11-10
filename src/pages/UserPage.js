@@ -15,12 +15,6 @@ function UserPage({ userData }) {
   let count = 1;
 
   useEffect(() => {
-    if (userData === "admin") {
-      setAdmin(true);
-    } else {
-      setAdmin(false);
-    }
-
     const checkCookie = async () => {
       try {
         // Make a request to a server route that requires the HTTP-only cookie
@@ -33,8 +27,13 @@ function UserPage({ userData }) {
 
         setInfo(data.token);
 
-        if (data.role !== "exist") {
-          // If the request is successful, set the state to indicate that the cookie exists
+        if (data.role === "admin") {
+          setAdmin(true);
+        } else {
+          setAdmin(false);
+        }
+
+        if (data.token === "") {
           navigate("/login");
         }
       } catch (error) {
@@ -48,8 +47,8 @@ function UserPage({ userData }) {
   const handleLogout = async () => {
     try {
       // Make a request to the server to handle logout
-      await fetch("auth/logout", {
-        method: "POST",
+      await fetch("/auth/logout", {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
       });
 
